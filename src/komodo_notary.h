@@ -84,7 +84,9 @@ int32_t getacseason(uint32_t timestamp)
         if ( timestamp <= KMD_SEASON_TIMESTAMPS[i] && timestamp > KMD_SEASON_TIMESTAMPS[i-1] )
             return(i+1);
     }
-    return(0);
+    // dPoW has ended, so no new seasons will be added: keep the last season in
+    // force instead of returning 0, which callers use as an index (season-1).
+    return(NUM_KMD_SEASONS);
 }
 
 int32_t komodo_notaries(uint8_t pubkeys[64][33],int32_t height,uint32_t timestamp)
