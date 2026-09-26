@@ -2283,6 +2283,14 @@ fprintf(stderr,"extralen.%d before disable bits\n",extralen);
                 fprintf(stderr,"ac_cbmaturity must be >0, shutting down\n");
                 StartShutdown();
             }
+            // Without dPoW, low-hashrate chains need a tight reorg limit.
+            // 25 blocks (~25 min at 60s) limits 51% attack damage while
+            // allowing legitimate temporary forks to resolve.
+            if (strcmp(ASSETCHAINS_SYMBOL,"TOKEL") == 0 && !mapArgs.count("-maxreorg"))
+            {
+                MAX_REORG_LENGTH = 25;
+                WITNESS_CACHE_SIZE = MAX_REORG_LENGTH + 10;
+            }
             //fprintf(stderr,"ASSETCHAINS_RPCPORT (%s) %u\n",ASSETCHAINS_SYMBOL,ASSETCHAINS_RPCPORT);
         }
         if ( ASSETCHAINS_RPCPORT == 0 )

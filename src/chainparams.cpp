@@ -657,6 +657,35 @@ void *chainparams_commandline()
                             (double)2777            // * estimated number of transactions per day after checkpoint
                             //   total number of tx / (checkpoint block height / (24 * 24))
                     };
+            // dPoW notarisation stopped at 2057402 and mining halted at 2220626,
+            // leaving history protected only by hashrate. Lock it in.
+            // Estimated from sync at block 803742 (1248873 tx, ~1.55 tx/block).
+            // Update with the real value from getchaintxstats once fully synced.
+            #undef TOKEL_CHECKPOINT_TXCOUNT
+            #define TOKEL_CHECKPOINT_TXCOUNT 3450000
+            if (strcmp(ASSETCHAINS_SYMBOL,"TOKEL") == 0)
+            {
+                checkpointData =
+                    {
+                            boost::assign::map_list_of
+                                    (0,       pCurrentParams->consensus.hashGenesisBlock)
+                                    (250000,  uint256S("0x000000015f1ae9afea475010a6f87c69239a4867aec99f2e776f97c5e4df92c5"))
+                                    (500000,  uint256S("0x000056705bf75000767bdf3a6c162eac2b7a5b2197c04662ba8f324f25ce8e04"))
+                                    (750000,  uint256S("0x0000004578611d577cccef102b559ef2210220df67da1b5b8e0fbbae10093434"))
+                                    (1000000, uint256S("0x0000000b3ce96ab61f006e82676a233775cd6173a09e1b065674f0f99d28edcd"))
+                                    (1250000, uint256S("0x000003ecd35d0d120419d1f35c482cfd64734bb38fefe6637f428534983c234f"))
+                                    (1500000, uint256S("0x0000004f6de888a4033b6f57e7c861433c9df8343fb4f29d46c8b0f171b79642"))
+                                    (1750000, uint256S("0x0000008d3a37925b6dccf617e9e23a015b5e40c2536bccc7422644b255650481"))
+                                    (2000000, uint256S("0x00a2f7ecf67c29b2bfdc1c86f21cf89c57567f04cf92005f9574fc92562d4168"))
+                                    (2057402, uint256S("0x0085da19d521fd73f8d2b1253be3d4995963bbafc7a2ad33660dcdc6e39c6eaf"))
+                                    (2100000, uint256S("0x01188feeef625258a0ae8636579754deb2fad853dff58db1e193393b33bc0ccc"))
+                                    (2200000, uint256S("0x00bcac18c27dbbb634a6f935b90c87ed31150146a197df2a1fcb2bac58aad066"))
+                                    (2220626, uint256S("0x009b4396d0db239ddf7a68a3df808fdbd375a2a7ada960f0e3583ea262297819")),
+                            (int64_t)1776608521,    // * UNIX timestamp of last checkpoint block
+                            (int64_t)TOKEL_CHECKPOINT_TXCOUNT, // * total number of transactions between genesis and last checkpoint
+                            (double)1440            // * estimated number of transactions per day after checkpoint
+                    };
+            }
         }
     }
     else
