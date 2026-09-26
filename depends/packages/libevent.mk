@@ -1,14 +1,13 @@
 package=libevent
-$(package)_version=2.1.12
-$(package)_download_path=https://github.com/libevent/libevent/archive/
-$(package)_file_name=$(package)-$($(package)_version).tar.gz
-$(package)_download_file=release-$($(package)_version)-stable.tar.gz
-$(package)_sha256_hash=7180a979aaa7000e1264da484f712d403fcf7679b1e9212c4e3d09f5c93efc24
-$(package)_patches=0001-fix-windows-getaddrinfo.patch 0002-fix-gcc-warnings.patch
+$(package)_version=2.1.13
+$(package)_download_path=https://github.com/libevent/libevent/releases/download/release-$($(package)_version)-stable
+$(package)_file_name=$(package)-$($(package)_version)-stable.tar.gz
+$(package)_download_file=$(package)-$($(package)_version)-stable.tar.gz
+$(package)_sha256_hash=f7e9383b8c0baa81b687e5b5eecc01beefaf1b19b64151d95ed61647fe7a315c
+$(package)_patches=0001-fix-windows-getaddrinfo.patch
 
 define $(package)_preprocess_cmds
    patch -p1 < $($(package)_patch_dir)/0001-fix-windows-getaddrinfo.patch && \
-   patch -p1 < $($(package)_patch_dir)/0002-fix-gcc-warnings.patch && \
   ./autogen.sh
 endef
 

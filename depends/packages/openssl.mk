@@ -1,12 +1,12 @@
 package=openssl
-$(package)_version=1.1.1w
-$(package)_download_path=https://www.openssl.org/source
+$(package)_version=3.5.8
+$(package)_download_path=https://github.com/openssl/openssl/releases/download/openssl-$($(package)_version)
 $(package)_file_name=$(package)-$($(package)_version).tar.gz
-$(package)_sha256_hash=cf3098950cb4d853ad95c0841f1f9c6d3dc102dccfcacd521d93925208b76ac8
+$(package)_sha256_hash=a8f84a39918ec6415ce765d9b429d313ba97b8143169c172e734b9514464f5b2
 
 define $(package)_set_vars
 $(package)_config_env=AR="$($(package)_ar)" RANLIB="$($(package)_ranlib)" CC="$($(package)_cc)"
-$(package)_config_opts=--prefix=$(host_prefix) --openssldir=$(host_prefix)/etc/openssl
+$(package)_config_opts=--prefix=$(host_prefix) --openssldir=$(host_prefix)/etc/openssl --libdir=lib
 $(package)_config_opts+=no-afalgeng
 $(package)_config_opts+=no-asm
 $(package)_config_opts+=no-async
@@ -16,18 +16,14 @@ $(package)_config_opts+=no-camellia
 $(package)_config_opts+=no-cast
 $(package)_config_opts+=no-cmac
 $(package)_config_opts+=no-cms
-$(package)_config_opts+=no-crypto-mdebug
-$(package)_config_opts+=no-crypto-mdebug-backtrace
 $(package)_config_opts+=no-dgram
 $(package)_config_opts+=no-dso
 $(package)_config_opts+=no-dtls
 $(package)_config_opts+=no-dtls1
-$(package)_config_opts+=no-dtls1-method
 $(package)_config_opts+=no-dynamic-engine
 $(package)_config_opts+=no-egd
 $(package)_config_opts+=no-engine
 $(package)_config_opts+=no-gost
-$(package)_config_opts+=no-heartbeats
 $(package)_config_opts+=no-md2
 $(package)_config_opts+=no-md4
 $(package)_config_opts+=no-mdc2
@@ -48,11 +44,11 @@ $(package)_config_opts+=no-shared
 $(package)_config_opts+=no-srp
 $(package)_config_opts+=no-srtp
 $(package)_config_opts+=no-ssl3
-$(package)_config_opts+=no-ssl3-method
 $(package)_config_opts+=no-ssl-trace
 $(package)_config_opts+=no-ts
-$(package)_config_opts+=no-ui
-$(package)_config_opts+=no-unit-test
+$(package)_config_opts+=no-ui-console
+$(package)_config_opts+=no-tests
+$(package)_config_opts+=no-docs
 $(package)_config_opts+=no-weak-ssl-ciphers
 $(package)_config_opts+=no-whirlpool
 $(package)_config_opts+=$($(package)_cflags) $($(package)_cppflags)

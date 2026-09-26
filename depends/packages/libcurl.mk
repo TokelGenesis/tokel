@@ -1,11 +1,12 @@
 package=libcurl
-$(package)_version=8.4.0
+$(package)_version=8.22.0
 $(package)_dependencies=openssl
-$(package)_download_path=https://curl.haxx.se/download
+$(package)_download_path=https://curl.se/download
 $(package)_file_name=curl-$($(package)_version).tar.gz
-$(package)_sha256_hash=816e41809c043ff285e8c0f06a75a1fa250211bbfb2dc0a037eeef39f1a9e427
-$(package)_patches=0001-fix-null-format-argument.patch
+$(package)_sha256_hash=d54dd598bf05927a726deb38df31c6a255ba83ff1de57c5d1464dac3ed8f44a1
 $(package)_config_opts=--with-openssl --disable-shared --enable-static --prefix=$(host_prefix)
+$(package)_config_opts+=--without-libpsl --without-libidn2 --without-zstd --without-nghttp2 --without-nghttp3
+$(package)_config_opts+=--without-librtmp --without-brotli --without-libssh2 --disable-ldap --disable-ldaps
 $(package)_config_opts_linux=--host=$(HOST)
 $(package)_config_opts_mingw32=--enable-mingw --host=x86_64-w64-mingw32
 $(package)_config_opts_darwin=--without-libidn2 --without-zstd --without-nghttp2 --without-librtmp --without-brotli
@@ -24,10 +25,6 @@ define $(package)_set_vars
 endef
 endif
 
-
-define $(package)_preprocess_cmds
-  patch -p1 < $($(package)_patch_dir)/0001-fix-null-format-argument.patch
-endef
 
 define $(package)_config_cmds
   echo '=== config for $(package):' && \
