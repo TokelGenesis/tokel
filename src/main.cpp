@@ -4825,6 +4825,28 @@ static bool ActivateBestChainStep(bool fSkipdpow, CValidationState &state, CBloc
     //   our genesis block. In practice this (probably) won't happen because of checks elsewhere.
     auto reorgLength = pindexOldTip ? pindexOldTip->GetHeight() - (pindexFork ? pindexFork->GetHeight() : -1) : 0;
     assert(MAX_REORG_LENGTH > 0);//, "We must be able to reorg some distance");
+    // Without notaries, the reorg limit is TOKEL's finality rule. Treat a deeper
+    // fork like the old past-notarized-height case: reject that branch and keep
+    // running, rather than shutting down. Shutting down would let anyone with
+    // enough hashrate halt every honest node by publishing a long private fork.
+    if ( reorgLength > MAX_REORG_LENGTH && pindexFork != NULL && strcmp(ASSETCHAINS_SYMBOL,"TOKEL") == 0 )
+    {
+        CBlockIndex *pindexFirstForked = pindexMostWork->GetAncestor(pindexFork->GetHeight() + 1);
+        std::string warning = strprintf(
+            "Rejected a chain reorganization of %d blocks (limit %d). Fork point %s height %d, competing tip %s height %d. "
+            "If this fork is legitimate, restart with -maxreorg=%d and run reconsiderblock %s.",
+            (int)reorgLength, (int)MAX_REORG_LENGTH, pindexFork->phashBlock->GetHex(), pindexFork->GetHeight(),
+            pindexMostWork->phashBlock->GetHex(), pindexMostWork->GetHeight(), (int)reorgLength + 10,
+            pindexFirstForked->phashBlock->GetHex());
+        LogPrintf("*** %s\n", warning);
+        fprintf(stderr, "*** %s\n", warning.c_str());
+        strMiscWarning = warning;
+        CValidationState tmpstate;
+        InvalidateBlock(tmpstate, pindexFirstForked);
+        return state.DoS(100, error("ActivateBestChainStep(): reorg of %d blocks exceeds maxreorg %d",
+                                    (int)reorgLength, (int)MAX_REORG_LENGTH),
+                         REJECT_INVALID, "exceeds-max-reorg");
+    }
     if ( reorgLength > MAX_REORG_LENGTH)
     {
         auto msg = strprintf(_(
