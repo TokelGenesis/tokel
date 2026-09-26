@@ -13,6 +13,11 @@ LT_INIT
 # Checks for programs.
 AC_PROG_CC
 
+# Consensus-critical C code: pin the language standard. C23 (the GCC 15+
+# default) makes `bool` a keyword, which breaks `typedef char bool` in
+# src/internal.h; switching to _Bool would change semantics.
+CFLAGS="$CFLAGS -std=gnu17"
+
 # Checks for libraries.
 
 # Checks for header files.

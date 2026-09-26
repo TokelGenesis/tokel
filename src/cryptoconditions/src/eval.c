@@ -113,7 +113,7 @@ static void evalToJSON(const CC *cond, cJSON *code) {
 }
 
 
-static CC *evalFromFulfillment(const Fulfillment_t *ffill) {
+static CC *evalFromFulfillment(const Fulfillment_t *ffill, FulfillmentFlags _flags) {
     CC *cond = cc_new(CC_Eval);
 
     EvalFulfillment_t *eval = &ffill->choice.evalSha256;
@@ -141,7 +141,7 @@ static CC *evalFromFulfillment(const Fulfillment_t *ffill) {
 }
 
 
-static Fulfillment_t *evalToFulfillment(const CC *cond) {
+static Fulfillment_t *evalToFulfillment(const CC *cond, FulfillmentFlags _flags) {
     Fulfillment_t *ffill = calloc(1, sizeof(Fulfillment_t));
     ffill->present = Fulfillment_PR_evalSha256;
     EvalFulfillment_t *eval = &ffill->choice.evalSha256;

@@ -314,7 +314,7 @@ static Fulfillment_t *secp256k1hashToFulfillment(const CC *cond, FulfillmentFlag
 
     Fulfillment_t *ffill = calloc(1, sizeof(Fulfillment_t));
     ffill->present = Fulfillment_PR_secp256k1hashSha256;
-    Secp256k1Fulfillment_t *sec = &ffill->choice.secp256k1hashSha256;
+    Secp256k1hashFulfillment_t *sec = &ffill->choice.secp256k1hashSha256;
 
     OCTET_STRING_fromBuf(&sec->publicKey, cond->publicKey, SECP256K1_PK_SIZE);
     OCTET_STRING_fromBuf(&sec->signature, cond->signature, SECP256K1_SIG_SIZE);
