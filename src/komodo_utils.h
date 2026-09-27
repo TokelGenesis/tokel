@@ -2446,6 +2446,11 @@ fprintf(stderr,"extralen.%d before disable bits\n",extralen);
         }
     } else BITCOIND_RPCPORT = GetArg("-rpcport", BaseParams().RPCPort());
     KOMODO_DPOWCONFS = GetArg("-dpowconfs",dpowconfs);
+    // TOKEL's notarisation ended at 2057402. With dPoW confirmations on, every newer
+    // transaction reports 1 confirmation forever, which stalls pools, exchanges and
+    // minconf-based spends. Report real depth unless -dpowconfs is given explicitly.
+    if ( strcmp(ASSETCHAINS_SYMBOL,"TOKEL") == 0 && !mapArgs.count("-dpowconfs") )
+        KOMODO_DPOWCONFS = 0;
     if ( ASSETCHAINS_SYMBOL[0] == 0 || strcmp(ASSETCHAINS_SYMBOL,"SUPERNET") == 0 || strcmp(ASSETCHAINS_SYMBOL,"DEX") == 0 || strcmp(ASSETCHAINS_SYMBOL,"COQUI") == 0 || strcmp(ASSETCHAINS_SYMBOL,"PIRATE") == 0 || strcmp(ASSETCHAINS_SYMBOL,"KMDICE") == 0 )
         KOMODO_EXTRASATOSHI = 1;
 
