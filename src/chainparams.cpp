@@ -659,10 +659,9 @@ void *chainparams_commandline()
                     };
             // dPoW notarisation stopped at 2057402 and mining halted at 2220626,
             // leaving history protected only by hashrate. Lock it in.
-            // Estimated from sync at block 803742 (1248873 tx, ~1.55 tx/block).
-            // Update with the real value from getchaintxstats once fully synced.
+            // getchaintxstats at block 2220626 on a fully synced node.
             #undef TOKEL_CHECKPOINT_TXCOUNT
-            #define TOKEL_CHECKPOINT_TXCOUNT 3450000
+            #define TOKEL_CHECKPOINT_TXCOUNT 3052774
             if (strcmp(ASSETCHAINS_SYMBOL,"TOKEL") == 0)
             {
                 checkpointData =
